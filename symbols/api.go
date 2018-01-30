@@ -1,0 +1,120 @@
+package symbols
+
+import (
+	"encoding/json"
+	"fmt"
+	hxFile "hx98/base/file"
+	hxTime "hx98/base/time"
+	hxUtils "hx98/base/utils"
+	"io/ioutil"
+	sxApi "sx98/quote2/api"
+	"time"
+)
+
+func GetExchangeList() (retList []Exchange2Items, retE error) {
+
+	saveFileName := hxUtils.ProfileReadString("symbols_save_path")
+
+	lastAccessTime, fileExist := hxFile.FileLastWriteTime(saveFileName)
+
+	if !fileExist {
+		hxFile.CreateDir(hxFile.FileDir(saveFileName))
+	}
+
+	needFetch := !fileExist
+
+	if !needFetch {
+		needFetch = !hxTime.CheckSamePeriod("1d", time.Unix(lastAccessTime, 0))
+	}
+
+	if needFetch {
+		retList, retE = fetchExchanges()
+
+		if retE == nil {
+			retList = appendCustomExchange(retList)
+			jsonData, err := json.Marshal(retList)
+			if err == nil {
+				retE = ioutil.WriteFile(saveFileName, jsonData, 0666)
+			} else {
+				retE = err
+			}
+		}
+	} else {
+		fileData, e := ioutil.ReadFile(saveFileName)
+		if e != nil {
+			retE = e
+			return
+		}
+		retE = json.Unmarshal(fileData, &retList)
+		if retE != nil {
+			return
+		}
+	}
+
+	return
+
+}
+
+func appendCustomExchange(exchangesList []Exchange2Items) []Exchange2Items {
+	if exchangesList == nil {
+		exchangesList = make([]Exchange2Items, 0)
+	}
+
+	var custom Exchange2Items
+	custom.Id = Exchange_CustomFutures
+	custom.Name = "自选"
+	custom.Country = Country_CN
+	custom.ExchangeType = ExchangeType_Futures
+	custom.KPeriods = sxApi.GetValidPeriods()
+
+	exchangesList = append([]Exchange2Items{custom}, exchangesList...)
+
+	return exchangesList
+}
+
+func GetSymbolList(foundExchange *Exchange2Items) (retList []map[string]string, retE error) {
+
+	exchangeId := foundExchange.Id
+
+	saveFileName := hxUtils.ProfileReadString("symbols_save_path_fmt")
+
+	saveFileName = fmt.Sprintf(saveFileName, exchangeId)
+
+	lastAccessTime, fileExist := hxFile.FileLastWriteTime(saveFileName)
+
+	if !fileExist {
+		hxFile.CreateDir(hxFile.FileDir(saveFileName))
+	}
+
+	needFetch := !fileExist
+
+	if !needFetch {
+		needFetch = !hxTime.CheckSamePeriod("1d", time.Unix(lastAccessTime, 0))
+	}
+
+	if needFetch {
+		retList, retE = fetchExchangeSymbols(foundExchange)
+
+		if retE == nil {
+			jsonData, err := json.Marshal(retList)
+			if err == nil {
+				retE = ioutil.WriteFile(saveFileName, jsonData, 0666)
+			} else {
+				retE = err
+			}
+		}
+	} else {
+		fileData, e := ioutil.ReadFile(saveFileName)
+		if e != nil {
+			retE = e
+			return
+		}
+		retE = json.Unmarshal(fileData, &retList)
+		if retE != nil {
+			return
+		}
+	}
+
+	return
+
+}

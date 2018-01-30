@@ -12,3 +12,8 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+/plugins/quote/quote.a
+/plugins/quote/quote.h
+/so/quote/quote.a
+/so/quote/quote.h
+/quote.a
