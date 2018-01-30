@@ -4,7 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
-	"sx98/base/sina"
+
+	"github.com/pkrss/go-sina/common"
 )
 
 var regCtp *regexp.Regexp
@@ -17,7 +18,7 @@ func queryKline(symbol string, period string, indicate string) (retList []K_MACD
 	}
 
 	if regCtp == nil {
-		regCtp = regexp.MustCompile(sina.Regexp_Ctp)
+		regCtp = regexp.MustCompile(common.Regexp_Ctp)
 	}
 	ss := regCtp.FindStringSubmatch(symbol)
 	if len(ss) == 0 {
@@ -36,8 +37,6 @@ func queryKlineFuture(symbol string, period string, indicate string) (retList []
 		if retE != nil {
 			return
 		}
-
-		
 
 		return
 	}

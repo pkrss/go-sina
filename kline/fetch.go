@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	pkHttp "github.com/pkrss/go-utils/net/gbk"
+	pkHttp "github.com/pkrss/go-utils/net"
 
 	"github.com/robertkrimen/otto"
 )
@@ -152,7 +152,7 @@ func fetchSinaKlineFutureDo(symbol string, period string) (retList []K_MACDV, re
 // 旧的取K线期货数据，不支持中国金融交易所的股指期货
 func fetchSinaKlineFutureDo_bak(symbol string, period string) ([]K_MACDV, error) {
 
-	validPeriods := sxApi.GetValidPeriods()
+	validPeriods := GetValidPeriods()
 
 	found := false
 	for _, v := range validPeriods {
@@ -177,7 +177,7 @@ func fetchSinaKlineFutureDo_bak(symbol string, period string) ([]K_MACDV, error)
 
 	url := fmt.Sprintf("http://stock2.finance.sina.com.cn/futures/api/json.php/%s?_=%d000/&symbol=%s", sinaServiceName, time.Now().Unix(), symbol)
 
-	resp, err := hxUtils.HttpGet(url)
+	resp, err := pkHttp.HttpGet(url)
 
 	if err != nil {
 		return nil, err

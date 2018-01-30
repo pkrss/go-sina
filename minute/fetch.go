@@ -8,9 +8,9 @@ import (
 	"math"
 	"time"
 
-	"github.com/pkrss/go-sina/hq/fetch"
+	"github.com/pkrss/go-sina/quote"
 
-	pkNet "github.com/pkrss/go-utils/net/gbk"
+	pkNet "github.com/pkrss/go-utils/net"
 
 	"github.com/robertkrimen/otto"
 )
@@ -146,7 +146,7 @@ func fetchSinaMinuteFutureDo(symbol string) (retList []MINUTEDATA, retE error) {
 
 						if len(jsObjKeys2) < 7 {
 							var ok bool
-							prevSettlement, ok = fetch.GetHqFloatField(symbol, "1d", "prevSettlement")
+							prevSettlement, ok = quote.GetHqFloatField(symbol, "1d", "prevSettlement")
 							if !ok {
 								retE = fmt.Errorf("prevSettlement fetch error: %s", symbol)
 								return

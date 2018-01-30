@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/pkrss/go-sina/kline"
 	pkJson "github.com/pkrss/go-utils/json"
 	pkNet "github.com/pkrss/go-utils/net/gbk"
 
@@ -79,7 +80,7 @@ func fetchExchanges() (ret []Exchange2Items, retE error) {
 	}
 
 	ret = make([]Exchange2Items, 0)
-	validPeriods := GetValidPeriods()
+	validPeriods := kline.GetValidPeriods()
 
 	for _, exchangeId := range exchangeIds {
 
