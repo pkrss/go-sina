@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pkrss/gosina/common"
+	"github.com/pkrss/go-sina/common"
 
-	"github.com/pkrss/gosina/check"
+	"github.com/pkrss/go-sina/check"
 
 	"github.com/axgle/mahonia"
 )

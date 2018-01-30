@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pkrss/gosina/check"
+	"github.com/pkrss/go-sina/check"
 )
 
 var oldStrList []string = make([]string, 0)

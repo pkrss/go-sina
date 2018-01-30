@@ -3,7 +3,7 @@ package quote
 import (
 	"sync"
 
-	"github.com/pkrss/gosina/check"
+	"github.com/pkrss/go-sina/check"
 )
 
 var stk2quotes map[string]map[string]interface{}

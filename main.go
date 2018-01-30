@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/axgle/mahonia"
-	"github.com/pkrss/gosina/plugins/quote"
+	"github.com/pkrss/go-sina/plugins/quote"
 )
 
 func main() {

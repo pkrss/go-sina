@@ -1,6 +1,6 @@
 @echo off
 
-cd /d %GOPATH%\src\github.com\pkrss\gosina\so\quote
+cd /d %GOPATH%\src\github.com\pkrss\go-sina\so\quote
 
 go build -buildmode=c-archive -o quote.a
 

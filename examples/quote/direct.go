@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/pkrss/gosina/quote"
+	"github.com/pkrss/go-sina/quote"
 )
 
 func testDirect() {

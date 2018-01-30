@@ -3,7 +3,7 @@ package main
 import "C"
 
 import (
-	_ "github.com/pkrss/gosina/quote"
+	_ "github.com/pkrss/go-sina/quote"
 )
 
 func main() {

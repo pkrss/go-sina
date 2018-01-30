@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/pkrss/gosina/check"
+	"github.com/pkrss/go-sina/check"
 )
 
 type HqInfo struct {

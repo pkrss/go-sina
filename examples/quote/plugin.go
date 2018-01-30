@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/pkrss/gosina/plugins/quote"
+	"github.com/pkrss/go-sina/plugins/quote"
 )
 
 func testPlugin() {

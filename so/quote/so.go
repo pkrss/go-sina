@@ -16,7 +16,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/pkrss/gosina/quote"
+	"github.com/pkrss/go-sina/quote"
 )
 
 //export SoSetOnPublishChannel

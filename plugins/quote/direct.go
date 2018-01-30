@@ -1,7 +1,7 @@
 package quote
 
 import (
-	"github.com/pkrss/gosina/quote"
+	"github.com/pkrss/go-sina/quote"
 )
 
 func startDirectMode(p func(channel string, data string)) func(string) {

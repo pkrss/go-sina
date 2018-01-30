@@ -55,7 +55,7 @@ func Build() {
 }
 
 func buildSo(gopath string, target string) {
-	cmd := gopath + "src/github.com/pkrss/gosina/so/quote/build"
+	cmd := gopath + "src/github.com/pkrss/go-sina/so/quote/build"
 	// m := "sh"
 	if runtime.GOOS == "windows" {
 		cmd += ".bat"
@@ -71,7 +71,7 @@ func buildSo(gopath string, target string) {
 	}
 }
 func buildPlugin(gopath string, target string) {
-	cmd := "cd " + gopath + "src/github.com/pkrss/gosina/so/quote"
+	cmd := "cd " + gopath + "src/github.com/pkrss/go-sina/so/quote"
 	cmd += " && go build -buildmode=plugin -o libgoSinaQuote.so"
 	cmd += " && "
 	if runtime.GOOS == "windows" {

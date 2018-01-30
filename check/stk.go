@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/pkrss/gosina/common"
+	"github.com/pkrss/go-sina/common"
 )
 
 var regCtp *regexp.Regexp
