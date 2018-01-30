@@ -2,8 +2,9 @@ package kline
 
 import (
 	"container/list"
-	hxTime "hx98/base/time"
 	"time"
+
+	pkTime "github.com/pkrss/go-utils/time"
 )
 
 func handlePeriodKData(origList []K_MACDV, period string) (retList []K_MACDV) {
@@ -16,7 +17,7 @@ func handlePeriodKData(origList []K_MACDV, period string) (retList []K_MACDV) {
 		samePeriod = false
 
 		if oldItem != nil {
-			samePeriod = hxTime.CheckSamePeriod(period, time.Unix(oldItem.Time/1000, 0), time.Unix(origItem.Time/1000, 0))
+			samePeriod = pkTime.CheckSamePeriod(period, time.Unix(oldItem.Time/1000, 0), time.Unix(origItem.Time/1000, 0))
 		}
 
 		if samePeriod {

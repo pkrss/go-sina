@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	hxUtils "hx98/base/utils"
 	"strconv"
-	sxApi "sx98/quote2/api"
 	"time"
+
+	pkHttp "github.com/pkrss/go-utils/net/gbk"
 
 	"github.com/robertkrimen/otto"
 )
@@ -16,7 +16,7 @@ var vm *otto.Otto
 
 func fetchSinaKlineFutureDo(symbol string, period string) (retList []K_MACDV, retE error) {
 
-	validPeriods := sxApi.GetValidPeriods()
+	validPeriods := GetValidPeriods()
 
 	s := ""
 	found := false
@@ -55,7 +55,7 @@ func fetchSinaKlineFutureDo(symbol string, period string) (retList []K_MACDV, re
 		url = fmt.Sprintf("http://stock2.finance.sina.com.cn/futures/api/jsonp.php/%%20/InnerFuturesNewService.getFewMinLine?symbol=%s&type=%d", symbol, min)
 	}
 
-	resp, err := hxUtils.HttpGet(url)
+	resp, err := pkHttp.HttpGet(url)
 
 	if err != nil {
 		return nil, err

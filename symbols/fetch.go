@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	hxJson "hx98/base/json"
-	hxNet "hx98/base/net"
 	"regexp"
 	"strings"
-	sxApi "sx98/quote2/api"
+
+	pkJson "github.com/pkrss/go-utils/json"
+	pkNet "github.com/pkrss/go-utils/net/gbk"
 
 	"github.com/robertkrimen/otto"
 )
@@ -38,7 +38,7 @@ func fetchExchanges() (ret []Exchange2Items, retE error) {
 	params := make(map[string]string, 0)
 	params["charset"] = "gbk"
 
-	resp, err := hxNet.HttpGetEx(url, params)
+	resp, err := pkNet.HttpGetEx(url, params)
 
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func fetchExchanges() (ret []Exchange2Items, retE error) {
 	}
 
 	ret = make([]Exchange2Items, 0)
-	validPeriods := sxApi.GetValidPeriods()
+	validPeriods := GetValidPeriods()
 
 	for _, exchangeId := range exchangeIds {
 
@@ -228,7 +228,7 @@ func fetchExchangeSymbols_FuturesType(foundExchange *Exchange2Items, exchangeIte
 
 	url := fmt.Sprintf("http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.%s?node=%s&base=futures", wsMethodName, exchangeItemsType.Id)
 
-	resp, err := hxNet.HttpGetEx(url)
+	resp, err := pkNet.HttpGetEx(url)
 
 	if err != nil {
 		retE = err
@@ -240,7 +240,7 @@ func fetchExchangeSymbols_FuturesType(foundExchange *Exchange2Items, exchangeIte
 		return
 	}
 
-	resp = []byte(hxJson.FixJsonKey(string(resp)))
+	resp = []byte(pkJson.FixJsonKey(string(resp)))
 
 	var quotes []map[string]string
 	retE = json.Unmarshal(resp, &quotes)

@@ -5,10 +5,12 @@ package minute
 import (
 	"errors"
 	"fmt"
-	hxUtils "hx98/base/utils"
 	"math"
-	"sx98/hq/sina/fetch"
 	"time"
+
+	"github.com/pkrss/go-sina/hq/fetch"
+
+	pkNet "github.com/pkrss/go-utils/net/gbk"
 
 	"github.com/robertkrimen/otto"
 )
@@ -19,7 +21,7 @@ func fetchSinaMinuteFutureDo(symbol string) (retList []MINUTEDATA, retE error) {
 
 	url := fmt.Sprintf("http://stock2.finance.sina.com.cn/futures/api/jsonp.php/%20%20/InnerFuturesNewService.getMinLine?symbol=%s", symbol)
 
-	resp, err := hxUtils.HttpGet(url)
+	resp, err := pkNet.HttpGet(url)
 
 	if err != nil {
 		return nil, err

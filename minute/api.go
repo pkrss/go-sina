@@ -3,13 +3,14 @@ package minute
 import (
 	"encoding/json"
 	"errors"
-	hxFile "hx98/base/file"
-	hxTime "hx98/base/time"
-	hxUtils "hx98/base/utils"
 	"io/ioutil"
 	"sort"
 	"strings"
 	"time"
+
+	pkFile "github.com/pkrss/go-utils/file"
+	"github.com/pkrss/go-utils/profile"
+	pkTime "github.com/pkrss/go-utils/time"
 )
 
 func MinuteDataQuery(stk string) (retList []MINUTEDATA, retE error) {
@@ -19,19 +20,19 @@ func MinuteDataQuery(stk string) (retList []MINUTEDATA, retE error) {
 		return
 	}
 
-	saveFileName := hxUtils.ProfileReadString("minute_save_path_fmt")
+	saveFileName := profile.ProfileReadString("minute_save_path_fmt")
 	saveFileName = strings.Replace(saveFileName, "{stk}", stk, -1)
 
-	lastAccessTime, fileExist := hxFile.FileLastWriteTime(saveFileName)
+	lastAccessTime, fileExist := pkFile.FileLastWriteTime(saveFileName)
 
 	if !fileExist {
-		hxFile.CreateDir(hxFile.FileDir(saveFileName))
+		pkFile.CreateDir(pkFile.FileDir(saveFileName))
 	}
 
 	needFetch := !fileExist
 
 	if !needFetch {
-		needFetch = !hxTime.CheckSamePeriod("1m", time.Unix(lastAccessTime, 0))
+		needFetch = !pkTime.CheckSamePeriod("1m", time.Unix(lastAccessTime, 0))
 	}
 
 	var itemList []MINUTEDATA

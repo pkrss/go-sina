@@ -3,28 +3,29 @@ package symbols
 import (
 	"encoding/json"
 	"fmt"
-	hxFile "hx98/base/file"
-	hxTime "hx98/base/time"
-	hxUtils "hx98/base/utils"
 	"io/ioutil"
-	sxApi "sx98/quote2/api"
 	"time"
+
+	"github.com/pkrss/go-sina/kline"
+	pkFile "github.com/pkrss/go-utils/file"
+	"github.com/pkrss/go-utils/profile"
+	pkTime "github.com/pkrss/go-utils/time"
 )
 
 func GetExchangeList() (retList []Exchange2Items, retE error) {
 
-	saveFileName := hxUtils.ProfileReadString("symbols_save_path")
+	saveFileName := profile.ProfileReadString("symbols_save_path")
 
-	lastAccessTime, fileExist := hxFile.FileLastWriteTime(saveFileName)
+	lastAccessTime, fileExist := pkFile.FileLastWriteTime(saveFileName)
 
 	if !fileExist {
-		hxFile.CreateDir(hxFile.FileDir(saveFileName))
+		pkFile.CreateDir(pkFile.FileDir(saveFileName))
 	}
 
 	needFetch := !fileExist
 
 	if !needFetch {
-		needFetch = !hxTime.CheckSamePeriod("1d", time.Unix(lastAccessTime, 0))
+		needFetch = !pkTime.CheckSamePeriod("1d", time.Unix(lastAccessTime, 0))
 	}
 
 	if needFetch {
@@ -65,7 +66,7 @@ func appendCustomExchange(exchangesList []Exchange2Items) []Exchange2Items {
 	custom.Name = "自选"
 	custom.Country = Country_CN
 	custom.ExchangeType = ExchangeType_Futures
-	custom.KPeriods = sxApi.GetValidPeriods()
+	custom.KPeriods = kline.GetValidPeriods()
 
 	exchangesList = append([]Exchange2Items{custom}, exchangesList...)
 
@@ -76,20 +77,20 @@ func GetSymbolList(foundExchange *Exchange2Items) (retList []map[string]string, 
 
 	exchangeId := foundExchange.Id
 
-	saveFileName := hxUtils.ProfileReadString("symbols_save_path_fmt")
+	saveFileName := profile.ProfileReadString("symbols_save_path_fmt")
 
 	saveFileName = fmt.Sprintf(saveFileName, exchangeId)
 
-	lastAccessTime, fileExist := hxFile.FileLastWriteTime(saveFileName)
+	lastAccessTime, fileExist := pkFile.FileLastWriteTime(saveFileName)
 
 	if !fileExist {
-		hxFile.CreateDir(hxFile.FileDir(saveFileName))
+		pkFile.CreateDir(pkFile.FileDir(saveFileName))
 	}
 
 	needFetch := !fileExist
 
 	if !needFetch {
-		needFetch = !hxTime.CheckSamePeriod("1d", time.Unix(lastAccessTime, 0))
+		needFetch = !pkTime.CheckSamePeriod("1d", time.Unix(lastAccessTime, 0))
 	}
 
 	if needFetch {

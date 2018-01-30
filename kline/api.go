@@ -3,20 +3,21 @@ package kline
 import (
 	"encoding/json"
 	"errors"
-	hxBeans "hx98/base/beans"
-	hxFile "hx98/base/file"
-	hxTime "hx98/base/time"
-	hxUtils "hx98/base/utils"
 	"io/ioutil"
 	"sort"
 	"strings"
 	"time"
+
+	pkBeans "github.com/pkrss/go-utils/beans"
+	pkFile "github.com/pkrss/go-utils/file"
+	"github.com/pkrss/go-utils/profile"
+	pkTime "github.com/pkrss/go-utils/time"
 )
 
 var kline_peroids_list []string
 var kline_indciates_list []string
 
-func KlineDataQuery(stk string, period string, indicate string, pageable *hxBeans.Pageable) (retList []K_MACDV, retListSize int64, retE error) {
+func KlineDataQuery(stk string, period string, indicate string, pageable *pkBeans.Pageable) (retList []K_MACDV, retListSize int64, retE error) {
 
 	if stk == "" || period == "" {
 		retE = errors.New("参数[stk、period]不能为空")
@@ -28,14 +29,14 @@ func KlineDataQuery(stk string, period string, indicate string, pageable *hxBean
 	indicate = strings.ToLower(indicate)
 
 	if kline_peroids_list == nil {
-		kline_peroids_list = strings.Split(hxUtils.ProfileReadString("kline_peroids_list"), ",")
+		kline_peroids_list = strings.Split(profile.ProfileReadString("kline_peroids_list"), ",")
 	}
 
 	if kline_indciates_list == nil {
-		kline_indciates_list = strings.Split(hxUtils.ProfileReadString("kline_indciates_list"), ",")
+		kline_indciates_list = strings.Split(profile.ProfileReadString("kline_indciates_list"), ",")
 	}
 
-	saveFileName := hxUtils.ProfileReadString("kline_save_path_fmt")
+	saveFileName := profile.ProfileReadString("kline_save_path_fmt")
 	saveFileName = strings.Replace(saveFileName, "{stk}", stk, -1)
 	saveFileName = strings.Replace(saveFileName, "{period}", period, -1)
 	if indicate != "" {
@@ -44,16 +45,16 @@ func KlineDataQuery(stk string, period string, indicate string, pageable *hxBean
 		saveFileName = strings.Replace(saveFileName, "_{indciate}", indicate, -1)
 	}
 
-	lastAccessTime, fileExist := hxFile.FileLastWriteTime(saveFileName)
+	lastAccessTime, fileExist := pkFile.FileLastWriteTime(saveFileName)
 
 	if !fileExist {
-		hxFile.CreateDir(hxFile.FileDir(saveFileName))
+		pkFile.CreateDir(pkFile.FileDir(saveFileName))
 	}
 
 	needFetch := !fileExist
 
 	if !needFetch {
-		needFetch = !hxTime.CheckSamePeriod(period, time.Unix(lastAccessTime, 0))
+		needFetch = !pkTime.CheckSamePeriod(period, time.Unix(lastAccessTime, 0))
 	}
 
 	var itemList []K_MACDV
@@ -98,7 +99,7 @@ func KlineDataQuery(stk string, period string, indicate string, pageable *hxBean
 
 	if retE == nil && itemList != nil {
 		retListSize = int64(len(itemList))
-		// itemList = hxContainer.ListSubPage(itemList, pageable)
+		// itemList = pkContainer.ListSubPage(itemList, pageable)
 	}
 
 	retList = itemList
