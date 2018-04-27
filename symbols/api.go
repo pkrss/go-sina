@@ -12,6 +12,12 @@ import (
 	pkTime "github.com/pkrss/go-utils/time"
 )
 
+var openCtpMarketHost = "" // open-ctp-market
+
+func OptInit(host string) {
+	openCtpMarketHost = host
+}
+
 func GetExchangeList() (retList []Exchange2Items, retE error) {
 
 	saveFileName := profile.ProfileReadString("symbols_save_path")
@@ -32,7 +38,9 @@ func GetExchangeList() (retList []Exchange2Items, retE error) {
 		retList, retE = fetchExchanges()
 
 		if retE == nil {
-			retList = appendCustomExchange(retList)
+			if openCtpMarketHost == "" {
+				retList = appendCustomExchange2(retList)
+			}
 			jsonData, err := json.Marshal(retList)
 			if err == nil {
 				retE = ioutil.WriteFile(saveFileName, jsonData, 0666)
@@ -56,7 +64,7 @@ func GetExchangeList() (retList []Exchange2Items, retE error) {
 
 }
 
-func appendCustomExchange(exchangesList []Exchange2Items) []Exchange2Items {
+func appendCustomExchange2(exchangesList []Exchange2Items) []Exchange2Items {
 	if exchangesList == nil {
 		exchangesList = make([]Exchange2Items, 0)
 	}
